@@ -85,7 +85,27 @@ void serialEvent() {
 
     second_motor_state = neutral;
     Serial.println("stopping second");
+    
+  } else if (incoming == '7') {
+
+    first_motor_state = extend;
+    second_motor_state = extend;
+    Serial.println("extending both");
+    
+  }else if (incoming == '8') {
+
+    first_motor_state = retract;
+    second_motor_state = retract;
+    Serial.println("retracting both");
+    
+  }else if (incoming == '9') {
+
+    first_motor_state = neutral;
+    second_motor_state = neutral;
+    Serial.println("stopping both");
   }
+
+  
 }
 
 void stopIfFault()
