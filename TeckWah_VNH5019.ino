@@ -4,7 +4,7 @@
  * controls a pair of linear actuators. Documentation found at
  * https://www.pololu.com/product/2507
  *
- * Last updated: 26 Jan 2016
+ * Last updated: 30 Jan 2016 
  */
 
 #include "DualVNH5019MotorShield.h"
@@ -16,7 +16,7 @@ int thisLinearActuatorBoxNum = 2; //1 is for the horizontal drawer, 2 for the ve
 DualVNH5019MotorShield md;
 enum motor_states { extend, retract, neutral };
 motor_states first_motor_state = neutral;
-//motor_states second_motor_state = neutral;
+motor_states second_motor_state = neutral;
 
 void setup() {
   Serial.begin(9600);
@@ -42,7 +42,7 @@ void loop() {
       break;
   }
 
-    /*
+    
   switch (second_motor_state) {
     case (extend):
         md.setM2Speed(-400);
@@ -55,7 +55,7 @@ void loop() {
       break;
     default:
       break;
-  } */
+  } 
 }
 
 void serialEvent() {
@@ -65,12 +65,20 @@ void serialEvent() {
   if (incoming == '1') {
 
     first_motor_state = extend;
+    second_motor_state = extend;
     if (DEBUG)   Serial.println("extending");
 
   } else if (incoming == '0') {
 
     first_motor_state = retract;
+    second_motor_state = retract;
     if (DEBUG) Serial.println("retracting");
+  
+  } else if (incoming == '2') {
+
+    first_motor_state = neutral;
+    second_motor_state = neutral;
+    if (DEBUG) Serial.println("stopping");
   } 
 }
 
@@ -78,13 +86,13 @@ void stopIfFault()
 {
   if (md.getM1Fault())
   {
-    if (DEBUG) Serial.println("M1 fault");
+    Serial.println("M1 fault");
     while (1);
-  } /*
+  } 
   if (md.getM2Fault())
   {
-    if (DEBUG) Serial.println("M2 fault");
+    Serial.println("M2 fault");
     while (1);
-  } */
+  } 
 }
 
